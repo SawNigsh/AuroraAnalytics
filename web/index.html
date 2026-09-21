@@ -3,46 +3,71 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#0b0b10" />
+  <meta name="theme-color" content="#07070b" />
   <title>Aurora Analytics</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/style.css" />
 </head>
 <body>
+  <div class="ambient ambient-one" aria-hidden="true"></div>
+  <div class="ambient ambient-two" aria-hidden="true"></div>
+
   <main class="container">
     <header class="topbar">
-      <div>
-        <p class="eyebrow">AURORA</p>
-        <h1>Analytics</h1>
-        <p class="sub">Live execution statistics</p>
-      </div>
-      <div class="status" id="connectionStatus">
-        <span class="dot"></span>
-        <span>Connecting...</span>
+      <a class="brand" href="/" aria-label="Aurora Analytics home">
+        <span class="brand-mark"><span></span><span></span><span></span></span>
+        <span>AURORA<span class="brand-dot">.</span></span>
+      </a>
+
+      <div class="topbar-actions">
+        <div class="status" id="connectionStatus">
+          <span class="dot"></span>
+          <span>Connecting...</span>
+        </div>
       </div>
     </header>
 
+    <section class="hero">
+      <div>
+        <p class="eyebrow"><span class="eyebrow-line"></span> LIVE OPERATIONS</p>
+        <h1>Execution data,<br /><em>in focus.</em></h1>
+        <p class="sub">A clear view of every Aurora session, updated in real time.</p>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit orbit-outer"></div>
+        <div class="orbit orbit-inner"></div>
+        <div class="orbit-core"></div>
+      </div>
+    </section>
+
     <section class="cards" aria-label="Statistics">
-      <article class="card">
-        <span>Total executions</span>
+      <article class="card card-primary">
+        <div class="card-label"><span class="metric-icon icon-total">↗</span><span>Total executions</span></div>
         <strong id="totalExecutions">—</strong>
+        <span class="card-caption">All time activity</span>
       </article>
       <article class="card">
-        <span>Executions today</span>
+        <div class="card-label"><span class="metric-icon icon-today">◷</span><span>Executions today</span></div>
         <strong id="executionsToday">—</strong>
+        <span class="card-caption">Since midnight</span>
       </article>
       <article class="card">
-        <span>Active now</span>
+        <div class="card-label"><span class="metric-icon icon-active">●</span><span>Active now</span></div>
         <strong id="activeSessions">—</strong>
+        <span class="card-caption">Currently connected</span>
       </article>
     </section>
 
     <section class="panel">
       <div class="panel-head">
         <div>
+          <div class="section-kicker">MONITORING</div>
           <h2>Active sessions</h2>
           <p id="lastUpdated">Waiting for data...</p>
         </div>
-        <button id="refreshButton" type="button">Refresh</button>
+        <button id="refreshButton" type="button"><span class="refresh-icon">↻</span> Refresh data</button>
       </div>
 
       <div class="table-wrap">
@@ -65,6 +90,8 @@
         </table>
       </div>
     </section>
+
+    <footer class="footer"><span class="footer-pulse"></span> Aurora Analytics <span class="footer-separator">/</span> System telemetry</footer>
   </main>
 
   <script src="/app.js"></script>
