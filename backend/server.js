@@ -75,6 +75,42 @@ function secondsBetween(start, end = new Date()) {
   return Math.max(0, Math.floor((b - a) / 1000));
 }
 
+async function expireStaleSessions() {
+  const cutoff = isoFromNowMinusSeconds(ACTIVE_WINDOW_SECONDS);
+
+  const { data: staleSessions, error: findError } = await supabase
+    .from('sessions')
+    .select('id, started_at, last_seen_at')
+    .is('ended_at', null)
+    .lt('last_seen_at', cutoff)
+    .limit(200);
+
+  if (findError) {
+    console.error('expire stale sessions find error:', findError);
+    return;
+  }
+
+  if (!staleSessions?.length) return;
+
+  for (const session of staleSessions) {
+    const endedAt = session.last_seen_at;
+    const duration = secondsBetween(session.started_at, endedAt);
+
+    const { error: updateError } = await supabase
+      .from('sessions')
+      .update({
+        ended_at: endedAt,
+        duration_seconds: duration
+      })
+      .eq('id', session.id)
+      .is('ended_at', null);
+
+    if (updateError) {
+      console.error(`expire session ${session.id} error:`, updateError);
+    }
+  }
+}
+
 app.get('/api/health', (_req, res) => {
   res.json({ ok: true, service: 'Aurora Analytics', time: new Date().toISOString() });
 });
@@ -198,6 +234,7 @@ app.post('/api/v1/end', ingestionLimiter, requireApiKey, async (req, res) => {
 
 app.get('/api/v1/stats', async (_req, res) => {
   try {
+    await expireStaleSessions();
     const since = isoFromNowMinusSeconds(ACTIVE_WINDOW_SECONDS);
 
     const [totalResult, activeResult, todayResult] = await Promise.all([
@@ -236,6 +273,7 @@ app.get('/api/v1/stats', async (_req, res) => {
 
 app.get('/api/v1/recent', async (_req, res) => {
   try {
+    await expireStaleSessions();
     const { data, error } = await supabase
       .from('sessions')
       .select('id, client_id, script_version, executor, place_id, job_id, started_at, last_seen_at, ended_at, duration_seconds')
