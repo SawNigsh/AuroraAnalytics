@@ -51,14 +51,12 @@ function setOnline(online) {
 
 function renderRecent(rows) {
   if (!rows.length) {
-    elements.body.innerHTML = '<tr><td colspan="6" class="empty">No executions yet.</td></tr>';
+    elements.body.innerHTML = '<tr><td colspan="6" class="empty">No active sessions.</td></tr>';
     return;
   }
 
   elements.body.innerHTML = rows.map((row) => {
-    const badge = row.active
-      ? '<span class="badge active">● Active</span>'
-      : '<span class="badge">● Ended</span>';
+    const badge = '<span class="badge active">● Active</span>';
 
     return `
       <tr>

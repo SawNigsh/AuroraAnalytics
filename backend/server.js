@@ -274,26 +274,26 @@ app.get('/api/v1/stats', async (_req, res) => {
 app.get('/api/v1/recent', async (_req, res) => {
   try {
     await expireStaleSessions();
+    const since = isoFromNowMinusSeconds(ACTIVE_WINDOW_SECONDS);
+
     const { data, error } = await supabase
       .from('sessions')
       .select('id, client_id, script_version, executor, place_id, job_id, started_at, last_seen_at, ended_at, duration_seconds')
+      .is('ended_at', null)
+      .gte('last_seen_at', since)
       .order('started_at', { ascending: false })
       .limit(25);
 
     if (error) {
-      console.error('recent error:', error);
+      console.error('recent active error:', error);
       return res.status(500).json({ ok: false, error: 'Database error' });
     }
 
-    const now = Date.now();
-    const recent = (data || []).map((item) => {
-      const active = !item.ended_at && (now - new Date(item.last_seen_at).getTime()) <= ACTIVE_WINDOW_SECONDS * 1000;
-      return {
-        ...item,
-        active,
-        liveDurationSeconds: active ? secondsBetween(item.started_at) : item.duration_seconds
-      };
-    });
+    const recent = (data || []).map((item) => ({
+      ...item,
+      active: true,
+      liveDurationSeconds: secondsBetween(item.started_at)
+    }));
 
     res.json({ ok: true, data: recent });
   } catch (error) {
