@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0b10" />
+  <title>Aurora Analytics</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <main class="container">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">AURORA</p>
+        <h1>Analytics</h1>
+        <p class="sub">Live execution statistics</p>
+      </div>
+      <div class="status" id="connectionStatus">
+        <span class="dot"></span>
+        <span>Connecting...</span>
+      </div>
+    </header>
+
+    <section class="cards" aria-label="Statistics">
+      <article class="card">
+        <span>Total executions</span>
+        <strong id="totalExecutions">—</strong>
+      </article>
+      <article class="card">
+        <span>Executions today</span>
+        <strong id="executionsToday">—</strong>
+      </article>
+      <article class="card">
+        <span>Active now</span>
+        <strong id="activeSessions">—</strong>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <div>
+          <h2>Recent executions</h2>
+          <p id="lastUpdated">Waiting for data...</p>
+        </div>
+        <button id="refreshButton" type="button">Refresh</button>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Executor</th>
+              <th>Version</th>
+              <th>Place ID</th>
+              <th>Started</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody id="recentBody">
+            <tr>
+              <td colspan="6" class="empty">Loading...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
