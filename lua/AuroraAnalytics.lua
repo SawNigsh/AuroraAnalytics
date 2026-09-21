@@ -1,10 +1,10 @@
 -- Aurora Analytics client
 -- Replace these values before using the script.
 
-local API_URL = "https://YOUR-DOMAIN.example/api/v1"
-local API_KEY = "YOUR_LONG_RANDOM_API_KEY"
+local API_URL = "https://auroraanalytics.onrender.com/api/v1"
+local API_KEY = "API_KEY=a83f1c7d9e0a4b2c6f1e8d5a7b9c2d4e8f6a1b3c5d7e9f0a2b4c6d8e1f3a5"
 local SCRIPT_VERSION = "1.0.0"
-local HEARTBEAT_SECONDS = 30
+local HEARTBEAT_SECONDS = 10
 
 local Players = game:GetService("Players")
 local HttpService = game:GetService("HttpService")
